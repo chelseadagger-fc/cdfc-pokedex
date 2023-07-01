@@ -14,9 +14,9 @@ async function getData() {
 
 type pokeData = {
   name: string,
-  id: number,             // .id
+  id: number,
   height: number,
-  weight: number
+  weight: number,
 }  
 
 export default async function Home() {
@@ -25,7 +25,12 @@ export default async function Home() {
   return (
     <main>
       <Layout>
-        <PokeInfo name={pokeData.name} id={pokeData.id} height={pokeData.height} weight={pokeData.weight} />
+        <PokeInfo 
+          name={pokeData.name} 
+          id={pokeData.id} 
+          height={pokeData.height} 
+          weight={pokeData.weight}
+        />
       </Layout>
     </main>
   )
