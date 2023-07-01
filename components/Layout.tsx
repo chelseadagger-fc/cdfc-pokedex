@@ -8,7 +8,7 @@ export default function Layout({children}: any) {
                 <h1>children:</h1>
                 {children}
             </div>
-            <div className="bg-blue-500 h-1/6 lg:h-screen lg:w-1/3">
+            <div className="bg-blue-500 h-1/4 lg:h-screen lg:w-1/3">
                 <PokeList />
             </div>
             

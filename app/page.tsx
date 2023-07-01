@@ -1,10 +1,11 @@
 import Layout from '@/components/Layout'
+import Info from '@/components/Info'
 
 export default function Home() {
   return (
     <main>
       <Layout>
-        <h1>Pokemon data.</h1>
+        <Info />
       </Layout>
     </main>
   )
