@@ -21,7 +21,7 @@ export default function PokeInfo(pokeData: pokeData) {
     const urlGen6 = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/"
     
     const secondType = (pokeData.type1 !== undefined ? (
-        <div className="mt-3 text-xl p-2 border-black border-2 rounded-lg">
+        <div className="flex items-center justify-center mt-3 text-xl p-2 w-24 border-black border-2 rounded-lg">
             <p>{(pokeData.type1).toUpperCase()}</p>
         </div> 
     ) : null )
@@ -33,38 +33,38 @@ export default function PokeInfo(pokeData: pokeData) {
                     <h1 className="text-5xl font-bold">{(pokeData.name).toUpperCase()}</h1>
                     <h2 className="text-2xl mt-2">#{pokeData.id}</h2>
                     <div className="flex flex-row gap-x-8">
-                        <div className="mt-3 text-xl p-2 border-black border-2 rounded-lg">
+                        <div className="flex items-center justify-center mt-3 text-xl p-2 w-24 border-black border-2 rounded-lg">
                             <p>{(pokeData.type0).toUpperCase()}</p>
                         </div>
                         {secondType}
                     </div>
                 </div>
-                <div className="relative h-64 w-64 lg:h-80 lg:w-80 mb-5">
+                <div className="relative h-52 w-52 lg:h-80 lg:w-80 mb-5">
                     <Image 
                         src={pokeData.id <= 649 ? (urlGen5 + pokeData.id + '.gif') : (urlGen6 + pokeData.id + '.png')}
                         fill={true}
                         alt={"Image of " + pokeData.name} />
                 </div>
             </div>
-            <div className="flex flex-col grow justify-end">
+            <div className="flex flex-col justify-end">
                 <div className="flex flex-row justify-evenly items-center text-2xl mt-4">
-                    <div className="flex flex-col items-center px-12 py-2">
-                        <p className="text-3xl px-10 py-3 rounded-xl bg-slate-100/75">{pokeData.height / 10}m</p>
-                        <p className="text-base font-bold mt-2">Height</p>
+                    <div className="flex flex-col items-center py-2">
+                        <p className="text-3xl px-12 py-3 rounded-xl bg-slate-100/75">{pokeData.height / 10}m</p>
+                        <p className="text-base mt-1">Height</p>
                     </div>
-                    <div className="flex flex-col items-center px-12 py-2">
-                        <p className="text-3xl px-10 py-3 rounded-xl bg-slate-100/75">{pokeData.weight / 10}kg</p>
-                        <p className="text-base font-bold mt-2">Weight</p>
+                    <div className="flex flex-col items-center py-2">
+                        <p className="text-3xl px-12 py-3 rounded-xl bg-slate-100/75">{pokeData.weight / 10}kg</p>
+                        <p className="text-base mt-1">Weight</p>
                     </div>
                 </div>
                 <div className="flex flex-row justify-evenly items-center text-2xl mt-4">
-                    <div className="flex flex-col items-center px-12 py-2">
-                        <p className="text-3xl px-10 py-3 rounded-xl bg-slate-100/75">{pokeData.height / 10}m</p>
-                        <p className="text-base font-bold mt-2">Ability</p>
+                    <div className="flex flex-col items-center py-2">
+                        <p className="text-3xl px-12 py-3 rounded-xl bg-slate-100/75">{pokeData.height / 10}m</p>
+                        <p className="text-base mt-1">Ability</p>
                     </div>
-                    <div className="flex flex-col items-center px-12 py-2">
-                        <p className="text-3xl px-10 py-3 rounded-xl bg-slate-100/75">{pokeData.weight / 10}kg</p>
-                        <p className="text-base font-bold mt-2">Hidden Power</p>
+                    <div className="flex flex-col items-center py-2">
+                        <p className="text-3xl px-12 py-3 rounded-xl bg-slate-100/75">{pokeData.weight / 10}kg</p>
+                        <p className="text-base mt-1">Hidden Power</p>
                     </div>
                 </div>
                 <div className="flex flex-row justify-evenly items-center text-2xl mt-4">
