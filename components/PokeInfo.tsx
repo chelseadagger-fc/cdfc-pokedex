@@ -25,7 +25,12 @@ export default function PokeInfo(pokeData: pokeData) {
     } else {
         url = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/";
     }
-    const secondType = (pokeData.type1 !== undefined) ? (<p>{(pokeData.type1).toUpperCase()}</p>) : null;
+    // const secondType = (pokeData.types[1] !== undefined) ? (<p>{(pokeData.types[1].type.name).toUpperCase()}</p>) : null;
+    const secondType = (pokeData.type1 !== undefined ? (
+        <div className="mt-3 text-xl p-2 border-black border-2 rounded-lg">
+            <p>{(pokeData.type1).toUpperCase()}</p>
+        </div> 
+    ) : null )
 
     return (
         <div className="flex flex-col my-5 mx-3">
@@ -37,9 +42,7 @@ export default function PokeInfo(pokeData: pokeData) {
                         <div className="mt-3 text-xl p-2 border-black border-2 rounded-lg">
                             <p>{(pokeData.type0).toUpperCase()}</p>
                         </div>
-                        <div className="mt-3 text-xl p-2 border-black border-2 rounded-lg">
-                            {secondType}
-                        </div>
+                        {secondType}
                     </div>
                 </div>
                 <div className="relative h-64 w-64 lg:h-80 lg:w-80">
