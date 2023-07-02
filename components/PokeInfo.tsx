@@ -19,7 +19,6 @@ function capitalize(name: string) {
 export default function PokeInfo(pokeData: pokeData) {
     const urlGen5 = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/";
     const urlGen6 = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/"
-
     
     const secondType = (pokeData.type1 !== undefined ? (
         <div className="mt-3 text-xl p-2 border-black border-2 rounded-lg">
@@ -29,10 +28,10 @@ export default function PokeInfo(pokeData: pokeData) {
 
     return (
         <div className="flex flex-col my-5 mx-3">
-            <div className="flex flex-row justify-evenly">
+            <div className="flex flex-col-reverse justify-evenly items-center">
                 <div className="flex flex-col justify-center items-center grow">
-                    <h1 className="text-5xl">{(pokeData.name).toUpperCase()}</h1>
-                    <h2 className="text-2xl mt-2 mr-2">#{pokeData.id}</h2>
+                    <h1 className="text-5xl font-bold">{(pokeData.name).toUpperCase()}</h1>
+                    <h2 className="text-2xl mt-2">#{pokeData.id}</h2>
                     <div className="flex flex-row gap-x-8">
                         <div className="mt-3 text-xl p-2 border-black border-2 rounded-lg">
                             <p>{(pokeData.type0).toUpperCase()}</p>
@@ -40,7 +39,7 @@ export default function PokeInfo(pokeData: pokeData) {
                         {secondType}
                     </div>
                 </div>
-                <div className="relative h-64 w-64 lg:h-80 lg:w-80">
+                <div className="relative h-64 w-64 lg:h-80 lg:w-80 mb-5">
                     <Image 
                         src={pokeData.id <= 649 ? (urlGen5 + pokeData.id + '.gif') : (urlGen6 + pokeData.id + '.png')}
                         fill={true}
