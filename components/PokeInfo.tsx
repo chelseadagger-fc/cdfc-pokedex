@@ -19,13 +19,8 @@ function capitalize(name: string) {
 export default function PokeInfo(pokeData: pokeData) {
     const urlGen5 = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/";
     const urlGen6 = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/"
-    let url;
-    if (pokeData.id <= 649 ) {
-        url = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/';
-    } else {
-        url = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/";
-    }
-    // const secondType = (pokeData.types[1] !== undefined) ? (<p>{(pokeData.types[1].type.name).toUpperCase()}</p>) : null;
+
+    
     const secondType = (pokeData.type1 !== undefined ? (
         <div className="mt-3 text-xl p-2 border-black border-2 rounded-lg">
             <p>{(pokeData.type1).toUpperCase()}</p>
@@ -47,7 +42,7 @@ export default function PokeInfo(pokeData: pokeData) {
                 </div>
                 <div className="relative h-64 w-64 lg:h-80 lg:w-80">
                     <Image 
-                        src={url + pokeData.id + '.gif'}
+                        src={pokeData.id <= 649 ? (urlGen5 + pokeData.id + '.gif') : (urlGen6 + pokeData.id + '.png')}
                         fill={true}
                         alt={"Image of " + pokeData.name} />
                 </div>
