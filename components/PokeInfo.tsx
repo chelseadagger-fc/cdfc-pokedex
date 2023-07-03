@@ -1,4 +1,3 @@
-// import { getPokeData } from '../lib/pokeData';
 import Image from 'next/image';
 
 type pokeData = {
@@ -7,8 +6,9 @@ type pokeData = {
     height: number,
     weight: number,
     type0: string,
-    type1?: string
-}  
+    type1?: string,
+    dexEntry: string
+}
 
 function capitalize(name: string) {
     return name.charAt(0).toUpperCase() + name.slice(1);
@@ -18,10 +18,10 @@ function capitalize(name: string) {
 
 export default function PokeInfo(pokeData: pokeData) {
     const urlGen5 = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/";
-    const urlGen6 = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/"
+    const urlGen6 = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/"
     
     const secondType = (pokeData.type1 !== undefined ? (
-        <div className="flex items-center justify-center mt-3 text-xl p-2 w-24 border-black border-2 rounded-lg">
+        <div className="flex items-center justify-center mt-3 text-xl p-2 w-28 border-black border-2 rounded-lg">
             <p>{(pokeData.type1).toUpperCase()}</p>
         </div> 
     ) : null )
@@ -33,7 +33,7 @@ export default function PokeInfo(pokeData: pokeData) {
                     <h1 className="text-5xl font-bold">{(pokeData.name).toUpperCase()}</h1>
                     <h2 className="text-2xl mt-2">#{pokeData.id}</h2>
                     <div className="flex flex-row gap-x-8">
-                        <div className="flex items-center justify-center mt-3 text-xl p-2 w-24 border-black border-2 rounded-lg">
+                        <div className="flex items-center justify-center mt-3 text-xl p-2 w-28 border-black border-2 rounded-lg">
                             <p>{(pokeData.type0).toUpperCase()}</p>
                         </div>
                         {secondType}
@@ -45,6 +45,9 @@ export default function PokeInfo(pokeData: pokeData) {
                         fill={true}
                         alt={"Image of " + pokeData.name} />
                 </div>
+            </div>
+            <div className="mt-5">
+                <h2 className="text-center text-xl">{pokeData.dexEntry}</h2>
             </div>
             <div className="flex flex-col justify-end">
                 <div className="flex flex-row justify-evenly items-center text-2xl mt-4">
