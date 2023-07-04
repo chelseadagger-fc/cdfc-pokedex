@@ -1,15 +1,17 @@
 import Layout from '@/components/Layout'
 import PokeInfo from '@/components/PokeInfo'
 
+const pkmn = 'lucario';
+
 async function getData() {
-  const res = await fetch('https://pokeapi.co/api/v2/pokemon/pikachu');
+  const res = await fetch('https://pokeapi.co/api/v2/pokemon/' + pkmn);
   if (!res.ok) { throw new Error('Failed to fetch data') };
   const data = await res.json();
   return data;
 }
 
 async function getSpeciesData() {
-  const res = await fetch('https://pokeapi.co/api/v2/pokemon-species/pikachu');
+  const res = await fetch('https://pokeapi.co/api/v2/pokemon-species/' + pkmn);
   if (!res.ok) { throw new Error('Failed to fetch data') };
   const speciesData = await res.json();
   return speciesData;
