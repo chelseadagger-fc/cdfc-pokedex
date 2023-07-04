@@ -12,14 +12,24 @@ type pokeData = {
     dexEntry: string
 }
 
-function capitalize(name: string) {
-    return name.charAt(0).toUpperCase() + name.slice(1);
-}
+
 
 export default function PokeInfo(pokeData: pokeData) {
     const urlGen5 = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/";
     const urlGen6 = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/"
     
+    function capitalize(name: string) {
+        return name.charAt(0).toUpperCase() + name.slice(1);
+    }
+
+    function pretty(name: string) {
+        let prettyStr = name.toLowerCase().split('-');
+        for (let i = 0; i < prettyStr.length; i++) {
+            prettyStr[i] = prettyStr[i].charAt(0).toUpperCase() + prettyStr[i].substring(1);
+        };
+        return prettyStr.join(' ');
+    }
+
     const typeColors = {
         normal: '#A8A77A',
         fire: '#EE8130',
@@ -50,7 +60,7 @@ export default function PokeInfo(pokeData: pokeData) {
 
     const secondAbility = (pokeData.ability1 !== undefined ? (
         <div className="flex flex-col items-center py-2">
-            <p className="text-xl w-40 py-2 text-center rounded-3xl bg-slate-300/75">{capitalize(pokeData.ability1)}</p>
+            <p className="text-xl w-40 py-2 text-center rounded-3xl bg-slate-300/75">{pretty(pokeData.ability1)}</p>
         </div>
     ) : null )
 
@@ -92,12 +102,12 @@ export default function PokeInfo(pokeData: pokeData) {
                 <div className="flex flex-col">
                     <div className="flex flex-row justify-evenly">
                         <div className="flex flex-col items-center py-2">
-                            <p className="text-xl w-40 py-2 text-center rounded-3xl bg-slate-300/75">{capitalize(pokeData.ability0)}</p>
+                            <p className="text-xl w-40 py-2 text-center rounded-3xl bg-slate-300/75">{pretty(pokeData.ability0)}</p>
                             {pokeData.ability1 === undefined ? <p className="text-xs font-bold mt-1 text-stone-500">Ability</p> : null}
                         </div>
                         {secondAbility}
                     </div>
-                    {pokeData.ability1 !== undefined ? <p className="text-xs font-bold text-center mt-1 text-stone-500">Abilities</p> : null}
+                    {pokeData.ability1 !== undefined ? <p className="text-xs font-bold text-center text-stone-500">Abilities</p> : null}
                 </div>
                 <div className="flex flex-row justify-evenly items-center text-2xl mt-4">
                     <h1>something</h1>
