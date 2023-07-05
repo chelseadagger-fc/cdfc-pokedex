@@ -92,7 +92,7 @@ export default function PokeInfo(pokeData: pokeData) {
     ) : <p className="text-xs">{genderRateF}% <span className="font-bold">♀</span> / {genderRateM}% <span className="font-bold">♂</span></p> ) 
     
     const displayGenderRatio = (pokeData.gender === -1 ? null :
-        <div className={`w-32 h-3 ${genderRatioColor} rounded-3xl mb-1`}>
+        <div className={`w-32 h-3 ${genderRatioColor} rounded-3xl mb-1 opacity-60`}>
             <div className={`fairy h-3 ${genderRatioWidth} rounded-l-3xl`}></div>
         </div>
     )
@@ -101,7 +101,7 @@ export default function PokeInfo(pokeData: pokeData) {
     const totalStats = pokeData.statHP + pokeData.statAtk + pokeData.statDef + pokeData.statSpAtk + pokeData.statSpDef + pokeData.statSpd;
 
     return (
-        <div className="flex flex-col my-2 mx-3 ">
+        <div className="flex flex-col my-2 mx-3">
             <div className="flex flex-row justify-evenly items-center">
                 <div className="flex flex-col justify-center items-center">
                     <h1 className="text-3xl font-bold">{(pokeData.name).toUpperCase()}</h1>
@@ -113,7 +113,7 @@ export default function PokeInfo(pokeData: pokeData) {
                         {secondType}
                     </div>
                 </div>
-                <div className="relative ml-4 lg:h-80 lg:w-80 mb-5">
+                <div className="relative ml-4 lg:h-80 lg:w-80 mb-5 ">
                     <img
                         className="object-contain w-40 h-40"
                         src={pokeData.id <= 649 ? (urlGen5 + pokeData.id + '.gif') : (urlGen6 + pokeData.id + '.png')}

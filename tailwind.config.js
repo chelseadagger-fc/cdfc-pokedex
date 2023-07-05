@@ -34,6 +34,7 @@ module.exports = {
           'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
         'pokeball': "url('../public/images/pokeball.png')",
         'pokeball-cutoff': "url('../public/images/pokeball-cutoff.png')",
+        'pokeball-cutoff-mobile': "url('../public/images/pokeball-cutoff-mobile.png')",
       },
     },
   },
