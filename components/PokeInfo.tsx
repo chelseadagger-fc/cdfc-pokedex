@@ -1,5 +1,4 @@
 /* eslint-disable @next/next/no-img-element */
-import Image from 'next/image';
 
 type pokeData = {
     name: string,
@@ -13,9 +12,11 @@ type pokeData = {
     statHP: string,
     statAtk: string,
     statDef: string,
-    statSpA: string,
-    statSpD: string,
-    statSpeed: string,
+    statSpAtk: string,
+    statSpDef: string,
+    statSpd: string,
+    gender: number,
+    catchRate: number,
     dexEntry: string
 }
 
@@ -67,11 +68,41 @@ export default function PokeInfo(pokeData: pokeData) {
 
     const secondAbility = (pokeData.ability1 !== undefined ? (
         <div className="flex flex-col items-center py-2">
-            <p className="text-xl w-40 py-2 text-center rounded-3xl bg-slate-300/75">{pretty(pokeData.ability1)}</p>
+            <p className="text-xl w-40 h-12 py-2 text-center rounded-3xl bg-slate-300/75">{pretty(pokeData.ability1)}</p>
         </div>
     ) : null )
 
-    const totalStats = pokeData.statHP + pokeData.statAtk + pokeData.statDef + pokeData.statSpA + pokeData.statSpD + pokeData.statSpeed;
+    const genderRateF = (pokeData.gender / 8) * 100;
+    const genderRateM = 100 - genderRateF;
+    let genderRatioWidth = '';
+    switch (genderRateF) {
+        case 12.5:
+            genderRatioWidth = 'w-1/6';
+            break;
+        case 25: 
+            genderRatioWidth = 'w-1/4';
+            break;
+        case 37.5:
+            genderRatioWidth = 'w-2/6';
+            break;
+        case 50:
+            genderRatioWidth = 'w-1/2';
+            break;
+        case 62.5:
+            genderRatioWidth = 'w-4/6';
+            break;
+        case 75:
+            genderRatioWidth = 'w-3/4';
+            break;
+        case 87.5:
+            genderRatioWidth = 'w-5/6';
+            break;
+        case 100:
+            genderRatioWidth = 'w-full';
+            break;
+    }
+
+    const totalStats = pokeData.statHP + pokeData.statAtk + pokeData.statDef + pokeData.statSpAtk + pokeData.statSpDef + pokeData.statSpd;
 
     return (
         <div className="flex flex-col my-2 mx-3 ">
@@ -100,23 +131,40 @@ export default function PokeInfo(pokeData: pokeData) {
             <div className="flex flex-col justify-end">
                 <div className="flex flex-row justify-evenly items-center text-2xl mt-4">
                     <div className="flex flex-col items-center py-2">
-                        <p className="text-xl w-40 py-2 text-center rounded-3xl bg-slate-300/75">{pokeData.height / 10}m</p>
-                        <p className="text-xs font-bold mt-1 text-stone-500">┗  Height  ┛</p>
+                        <p className="text-xl w-40 h-12 py-2 text-center rounded-3xl bg-slate-300/75">{pokeData.height / 10}m</p>
+                        <p className="text-xs font-bold mt-1 text-stone-500">Height</p>
                     </div>
                     <div className="flex flex-col items-center py-2">
-                        <p className="text-xl w-40 py-2 text-center rounded-3xl bg-slate-300/75">{pokeData.weight / 10}kg</p>
-                        <p className="text-xs font-bold mt-1 text-stone-500">┖  Weight  ┛</p>
+                        <p className="text-xl w-40 h-12 py-2 text-center rounded-3xl bg-slate-300/75">{pokeData.weight / 10}kg</p>
+                        <p className="text-xs font-bold mt-1 text-stone-500">Weight</p>
                     </div>
                 </div>
-                <div className="flex flex-col">
+                <div className="flex flex-row justify-evenly items-center text-2xl mt-4">
+                    <div className="flex flex-col items-center">
+                        <div className="flex flex-col justify-between items-center text-xl w-40 h-12 py-2 text-center rounded-3xl text-xs bg-slate-300/75 py-2">
+                            <div className="w-32 h-3 water rounded-3xl">
+                                <div className={`fairy h-3 ${genderRatioWidth} rounded-l-3xl`}></div>
+                            </div>
+                            <p className="">
+                                {genderRateF}% <span className="font-bold">♀</span> / {genderRateM}% <span className="font-bold">♂</span>
+                            </p>
+                        </div>
+                        <p className="text-xs font-bold mt-1 text-stone-500">Gender</p>
+                    </div>
+                    <div className="flex flex-col items-center py-2">
+                        <p className="text-xl w-40 h-12 py-2 text-center rounded-3xl bg-slate-300/75">{pokeData.catchRate}</p>
+                        <p className="text-xs font-bold mt-1 text-stone-500">Catch Rate</p>
+                    </div>
+                </div>
+                <div className="flex flex-col mt-4">
                     <div className="flex flex-row justify-evenly">
                         <div className="flex flex-col items-center py-2">
-                            <p className="text-xl w-40 py-2 text-center rounded-3xl bg-slate-300/75">{pretty(pokeData.ability0)}</p>
+                            <p className="text-xl w-40 h-12 py-2 text-center rounded-3xl bg-slate-300/75">{pretty(pokeData.ability0)}</p>
                             {pokeData.ability1 === undefined ? <p className="text-xs font-bold mt-1 text-stone-500">┗  Ability  ┛</p> : null}
                         </div>
                         {secondAbility}
                     </div>
-                    {pokeData.ability1 !== undefined ? <p className="text-xs font-bold text-center text-stone-500">┖━━━━━━  Abilities  ━━━━━━┛</p> : null}
+                    {pokeData.ability1 !== undefined ? <p className="text-xs font-bold text-center text-stone-500">┗━━━━━━  Abilities  ━━━━━━┛</p> : null}
                 </div>
                 <div className="flex flex-col w-auto">
                     <div className="mt-4">
@@ -134,15 +182,15 @@ export default function PokeInfo(pokeData: pokeData) {
                                 <p className="text-center">DEF</p>
                             </div>
                             <div className="flex flex-col justify-between bg-slate-300/75 rounded-3xl h-20 p-2">
-                                <div className="flying rounded-full flex justify-center items-center w-8 h-8 text-xs text-center">{pokeData.statSpA}</div>
+                                <div className="flying rounded-full flex justify-center items-center w-8 h-8 text-xs text-center">{pokeData.statSpAtk}</div>
                                 <p className="text-center">SpA</p>
                             </div>
                             <div className="flex flex-col justify-between bg-slate-300/75 rounded-3xl h-20 p-2">
-                                <div className="grass rounded-full flex justify-center items-center w-8 h-8 text-xs text-center">{pokeData.statSpD}</div>
+                                <div className="grass rounded-full flex justify-center items-center w-8 h-8 text-xs text-center">{pokeData.statSpDef}</div>
                                 <p className="text-center">SpD</p>
                             </div>
                             <div className="flex flex-col justify-between bg-slate-300/75 rounded-3xl h-20 p-2">
-                                <div className="fairy rounded-full flex justify-center items-center w-8 h-8 text-xs text-center">{pokeData.statSpeed}</div>
+                                <div className="fairy rounded-full flex justify-center items-center w-8 h-8 text-xs text-center">{pokeData.statSpd}</div>
                                 <p className="text-center">SPD</p>
                             </div>
                             <div className="flex flex-col justify-between bg-slate-300/75 rounded-3xl h-20 p-2">
@@ -151,7 +199,7 @@ export default function PokeInfo(pokeData: pokeData) {
                             </div>
                         </div>
                     </div>
-                    <p className="text-xs font-bold text-center text-stone-500 mt-3">┖━━━━━━━  Stats  ━━━━━━━┛</p>
+                    <p className="text-xs font-bold text-center text-stone-500 mt-3">┗━━━━━━━  Stats  ━━━━━━━┛</p>
                 </div>
                 <div className="invisible lg:visible flex flex-row justify-evenly items-center text-2xl mt-4">
                     <h1>(invisible on mobile; visible on desktop)</h1>

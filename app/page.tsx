@@ -1,7 +1,7 @@
 import Layout from '@/components/Layout'
 import PokeInfo from '@/components/PokeInfo'
 
-const pkmn = 'weavile';
+const pkmn = 'cyndaquil';
 
 async function getData() {
   const res = await fetch('https://pokeapi.co/api/v2/pokemon/' + pkmn);
@@ -37,10 +37,13 @@ export default async function Home() {
           statHP={pokeData.stats[0].base_stat}
           statAtk={pokeData.stats[1].base_stat}
           statDef={pokeData.stats[2].base_stat}
-          statSpA={pokeData.stats[3].base_stat}
-          statSpD={pokeData.stats[4].base_stat}
-          statSpeed={pokeData.stats[5].base_stat}
+          statSpAtk={pokeData.stats[3].base_stat}
+          statSpDef={pokeData.stats[4].base_stat}
+          statSpd={pokeData.stats[5].base_stat}
+          gender={pokeSpeciesData.gender_rate}
+          catchRate={pokeSpeciesData.capture_rate}
           dexEntry={pokeSpeciesData.flavor_text_entries[10].flavor_text}
+
         />
       </Layout>
     </main>
