@@ -21,7 +21,6 @@ type pokeData = {
 }
 
 
-
 export default function PokeInfo(pokeData: pokeData) {
     const urlGen5 = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/";
     const urlGen6 = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/"
@@ -36,28 +35,6 @@ export default function PokeInfo(pokeData: pokeData) {
             prettyStr[i] = prettyStr[i].charAt(0).toUpperCase() + prettyStr[i].substring(1);
         };
         return prettyStr.join(' ');
-    }
-
-    const typeColors = {
-        normal: '#A8A77A',
-        fire: '#EE8130',
-        water: '#6390F0',
-        electric: '#F7D02C',
-        grass: '#7AC74C',
-        ice: '#96D9D6',
-        fighting: '#C22E28',
-        poison: '#A33EA1',
-        ground: '#E2BF65',
-        flying: '#A98FF3',
-        psychic: '#F95587',
-        bug: '#A6B91A',
-        rock: '#B6A136',
-        ghost: '#735797',
-        dragon: '#6F35FC',
-        dark: '#705746',
-        steel: '#B7B7CE',
-        fairy: '#D685AD',
-        default: '#FFFFFF'
     }
 
     const secondType = (pokeData.type1 !== undefined ? (
@@ -75,32 +52,51 @@ export default function PokeInfo(pokeData: pokeData) {
     const genderRateF = (pokeData.gender / 8) * 100;
     const genderRateM = 100 - genderRateF;
     let genderRatioWidth = '';
-    switch (genderRateF) {
-        case 12.5:
+    let genderRatioColor = 'water';
+    switch (pokeData.gender) {
+        case -1:
+            genderRatioWidth = 'invisible';
+            genderRatioColor = 'bg-slate-300/75';
+            break;
+        case 0:
+            genderRatioWidth = 'invisible';
+            break;
+        case 1:
             genderRatioWidth = 'w-1/6';
             break;
-        case 25: 
+        case 2: 
             genderRatioWidth = 'w-1/4';
             break;
-        case 37.5:
+        case 3:
             genderRatioWidth = 'w-2/6';
             break;
-        case 50:
+        case 4:
             genderRatioWidth = 'w-1/2';
             break;
-        case 62.5:
+        case 5:
             genderRatioWidth = 'w-4/6';
             break;
-        case 75:
+        case 6:
             genderRatioWidth = 'w-3/4';
             break;
-        case 87.5:
+        case 7:
             genderRatioWidth = 'w-5/6';
             break;
-        case 100:
+        case 8:
             genderRatioWidth = 'w-full';
             break;
     }
+
+    const displayGenderText = (pokeData.gender === -1 ? (
+        <p>Unknown</p>
+    ) : <p className="text-xs">{genderRateF}% <span className="font-bold">♀</span> / {genderRateM}% <span className="font-bold">♂</span></p> ) 
+    
+    const displayGenderRatio = (pokeData.gender === -1 ? null :
+        <div className={`w-32 h-3 ${genderRatioColor} rounded-3xl mb-1`}>
+            <div className={`fairy h-3 ${genderRatioWidth} rounded-l-3xl`}></div>
+        </div>
+    )
+
 
     const totalStats = pokeData.statHP + pokeData.statAtk + pokeData.statDef + pokeData.statSpAtk + pokeData.statSpDef + pokeData.statSpd;
 
@@ -141,13 +137,9 @@ export default function PokeInfo(pokeData: pokeData) {
                 </div>
                 <div className="flex flex-row justify-evenly items-center text-2xl mt-4">
                     <div className="flex flex-col items-center">
-                        <div className="flex flex-col justify-between items-center text-xl w-40 h-12 py-2 text-center rounded-3xl text-xs bg-slate-300/75 py-2">
-                            <div className="w-32 h-3 water rounded-3xl">
-                                <div className={`fairy h-3 ${genderRatioWidth} rounded-l-3xl`}></div>
-                            </div>
-                            <p className="">
-                                {genderRateF}% <span className="font-bold">♀</span> / {genderRateM}% <span className="font-bold">♂</span>
-                            </p>
+                        <div className="flex flex-col justify-center items-center text-xl w-40 h-12 py-2 text-center rounded-3xl bg-slate-300/75 py-2">
+                            {displayGenderRatio}
+                            {displayGenderText}
                         </div>
                         <p className="text-xs font-bold mt-1 text-stone-500">Gender</p>
                     </div>
@@ -194,8 +186,8 @@ export default function PokeInfo(pokeData: pokeData) {
                                 <p className="text-center">SPD</p>
                             </div>
                             <div className="flex flex-col justify-between bg-slate-300/75 rounded-3xl h-20 p-2">
-                                <div className="ghost rounded-full flex justify-center items-center w-8 h-8 text-xs text-center">{totalStats}</div>
-                                <p className="text-center">TOT</p>
+                                <div className="water rounded-full flex justify-center items-center w-8 h-8 text-xs text-center font-bold">{totalStats}</div>
+                                <p className="text-center font-bold">TOT</p>
                             </div>
                         </div>
                     </div>
