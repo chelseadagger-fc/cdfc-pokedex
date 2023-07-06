@@ -1,7 +1,7 @@
 import Layout from '@/components/Layout'
 import PokeInfo from '@/components/PokeInfo'
 
-const pkmn = 'typhlosion';
+const pkmn = 'ivysaur';
 
 async function getData() {
   const res = await fetch('https://pokeapi.co/api/v2/pokemon/' + pkmn);
@@ -20,7 +20,14 @@ async function getSpeciesData() {
 export default async function Home() {
   const pokeData = await getData();
   const pokeSpeciesData = await getSpeciesData();
+  const pokeEvolutionData = await getEvolutionData();
 
+  async function getEvolutionData() {
+    const res = await fetch(pokeSpeciesData.evolution_chain.url)
+    if (!res.ok) { throw new Error('Failed to fetch data') };
+    const evolutionData = await res.json();
+    return evolutionData;
+  }
 
   return (
     <main>
@@ -43,7 +50,7 @@ export default async function Home() {
           gender={pokeSpeciesData.gender_rate}
           growthRate={pokeSpeciesData.growth_rate.name}
           dexEntry={pokeSpeciesData.flavor_text_entries[10].flavor_text}
-
+          evolution={pokeEvolutionData.chain}
         />
       </Layout>
     </main>

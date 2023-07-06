@@ -18,40 +18,40 @@ type pokeData = {
     gender: number,
     growthRate: string,
     dexEntry: string,
-    evoData : {
+    evolution: {
         species: {
             name: string,
             url: string
         },
-        evolves_to: {
+        evolves_to: Array<{
             species: {
                 name: string,
                 url: string
             },
-            evolution_details: {
+            evolution_details: Array<{
                 min_level: number,
                 trigger: {
                     name: string
                 }
-            },
-            evolves_to: {
+            }>,
+            evolves_to: Array<{
                 species: {
                     name: string,
                     url: string
                 },
-                evolution_details: {
+                evolution_details: Array<{
                     min_level: number,
                     trigger: {
                         name: string
                     }
-                }
-            }
-        }
+                }>
+            }>
+        }>
     }
 }
 
 
-export default function PokeInfo(pokeData: pokeData) {
+export default async function PokeInfo(pokeData: pokeData) {
     const urlGen5 = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/";
     const urlGen6 = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/"
     
@@ -127,8 +127,18 @@ export default function PokeInfo(pokeData: pokeData) {
         </div>
     )
 
-
     const totalStats = pokeData.statHP + pokeData.statAtk + pokeData.statDef + pokeData.statSpAtk + pokeData.statSpDef + pokeData.statSpd;
+    
+    // const evoChainLength = Object.keys(pokeData.evolution.evolves_to).length;
+    // const evolutionDetails = (pokeData.evolution.evolves_to.length !== 0 ? evoChainLength : null)
+    
+    async function getEvoStage1() {
+        const res = await fetch('https://pokeapi.co/api/v2/pokemon/' + pokeData.evolution.species.name);
+        if (!res.ok) { throw new Error('Failed to fetch data') };
+        const data = await res.json();
+        return data;
+    }
+    const evoStage1 = await getEvoStage1();
 
     return (
         <div className="flex flex-col my-2 mx-3">
@@ -155,7 +165,7 @@ export default function PokeInfo(pokeData: pokeData) {
                 <p className="text-center text-xs font-bold mt-1 text-stone-500">Pokedex Entry</p>
             </div>
             <div className="flex flex-col justify-end">
-                <div className="flex flex-row justify-evenly items-center text-2xl mt-4">
+                <div className="flex flex-row justify-evenly items-center text-2xl mt-1">
                     <div className="flex flex-col items-center py-2">
                         <p className="text-xl w-40 h-12 py-2 text-center rounded-3xl bg-slate-300/75">{pokeData.height / 10}m</p>
                         <p className="text-xs font-bold mt-1 text-stone-500">Height</p>
@@ -165,7 +175,7 @@ export default function PokeInfo(pokeData: pokeData) {
                         <p className="text-xs font-bold mt-1 text-stone-500">Weight</p>
                     </div>
                 </div>
-                <div className="flex flex-row justify-evenly items-center text-2xl mt-4">
+                <div className="flex flex-row justify-evenly items-center text-2xl mt-1">
                     <div className="flex flex-col items-center">
                         <div className="flex flex-col justify-center items-center text-xl w-40 h-12 py-2 text-center rounded-3xl bg-slate-300/75 py-2">
                             {displayGenderRatio}
@@ -178,7 +188,7 @@ export default function PokeInfo(pokeData: pokeData) {
                         <p className="text-xs font-bold mt-1 text-stone-500">Growth Rate</p>
                     </div>
                 </div>
-                <div className="flex flex-col mt-4">
+                <div className="flex flex-col mt-1">
                     <div className="flex flex-row justify-evenly">
                         <div className="flex flex-col items-center py-2">
                             <p className="text-xl w-40 h-12 py-2 text-center rounded-3xl bg-slate-300/75">{pretty(pokeData.ability0)}</p>
@@ -189,7 +199,7 @@ export default function PokeInfo(pokeData: pokeData) {
                     {pokeData.ability1 !== undefined ? <p className="text-xs font-bold text-center text-stone-500">┗━━━━━━  Abilities  ━━━━━━┛</p> : null}
                 </div>
                 <div className="flex flex-col w-auto">
-                    <div className="mt-4">
+                    <div className="mt-2">
                         <div className="flex flex-row justify-evenly text-sm">
                             <div className="flex flex-col justify-between bg-slate-300/75 rounded-3xl h-20 p-2">
                                 <div className="fighting rounded-full flex justify-center items-center w-8 h-8 text-xs text-center">{pokeData.statHP}</div>
@@ -223,13 +233,19 @@ export default function PokeInfo(pokeData: pokeData) {
                     </div>
                     <p className="text-xs font-bold text-center text-stone-500 mt-3">┗━━━━━━━  Stats  ━━━━━━━┛</p>
                 </div>
-                <div className="flex flex-col mt-4">
+                <div className="flex flex-col mt-1">
                     <div>
-                        <h1>evolution details</h1>
+                        <div>
+                            <img
+                                src={urlGen6 + evoStage1.id + ".png"}
+                                alt={"image of " + evoStage1.name}
+                            />
+                            <p className="text-xs">{pretty(pokeData.evolution.species.name)}</p>
+                        </div>
                     </div>
                     <p className="text-xs font-bold text-center text-stone-500">┗━━━━━━  Evolution  ━━━━━━┛</p>
                 </div>
-                {/* <div className="invisible lg:visible flex flex-row justify-evenly items-center text-2xl mt-4">
+                {/* <div className="invisible lg:visible flex flex-row justify-evenly items-center text-2xl mt-1">
                     <h1>(invisible on mobile; visible on desktop)</h1>
                 </div> */}
             </div>
