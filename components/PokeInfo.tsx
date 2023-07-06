@@ -8,7 +8,7 @@ type pokeData = {
     type0: string,
     type1?: string,
     ability0: string,
-    ability1: string,
+    ability1?: string,
     statHP: string,
     statAtk: string,
     statDef: string,
@@ -16,8 +16,38 @@ type pokeData = {
     statSpDef: string,
     statSpd: string,
     gender: number,
-    catchRate: number,
-    dexEntry: string
+    growthRate: string,
+    dexEntry: string,
+    evoData : {
+        species: {
+            name: string,
+            url: string
+        },
+        evolves_to: {
+            species: {
+                name: string,
+                url: string
+            },
+            evolution_details: {
+                min_level: number,
+                trigger: {
+                    name: string
+                }
+            },
+            evolves_to: {
+                species: {
+                    name: string,
+                    url: string
+                },
+                evolution_details: {
+                    min_level: number,
+                    trigger: {
+                        name: string
+                    }
+                }
+            }
+        }
+    }
 }
 
 
@@ -89,7 +119,7 @@ export default function PokeInfo(pokeData: pokeData) {
 
     const displayGenderText = (pokeData.gender === -1 ? (
         <p>Unknown</p>
-    ) : <p className="text-xs">{genderRateF}% <span className="font-bold">♀</span> / {genderRateM}% <span className="font-bold">♂</span></p> ) 
+    ) : <p className="text-xs">{genderRateF}% <span className="font-bold">♀</span> | {genderRateM}% <span className="font-bold">♂</span></p> ) 
     
     const displayGenderRatio = (pokeData.gender === -1 ? null :
         <div className={`w-32 h-3 ${genderRatioColor} rounded-3xl mb-1 opacity-60`}>
@@ -144,8 +174,8 @@ export default function PokeInfo(pokeData: pokeData) {
                         <p className="text-xs font-bold mt-1 text-stone-500">Gender</p>
                     </div>
                     <div className="flex flex-col items-center py-2">
-                        <p className="text-xl w-40 h-12 py-2 text-center rounded-3xl bg-slate-300/75">{pokeData.catchRate}</p>
-                        <p className="text-xs font-bold mt-1 text-stone-500">Catch Rate</p>
+                        <p className="text-xl w-40 h-12 py-2 text-center rounded-3xl bg-slate-300/75">{pretty(pokeData.growthRate)}</p>
+                        <p className="text-xs font-bold mt-1 text-stone-500">Growth Rate</p>
                     </div>
                 </div>
                 <div className="flex flex-col mt-4">
@@ -193,9 +223,15 @@ export default function PokeInfo(pokeData: pokeData) {
                     </div>
                     <p className="text-xs font-bold text-center text-stone-500 mt-3">┗━━━━━━━  Stats  ━━━━━━━┛</p>
                 </div>
-                <div className="invisible lg:visible flex flex-row justify-evenly items-center text-2xl mt-4">
-                    <h1>(invisible on mobile; visible on desktop)</h1>
+                <div className="flex flex-col mt-4">
+                    <div>
+                        <h1>evolution details</h1>
+                    </div>
+                    <p className="text-xs font-bold text-center text-stone-500">┗━━━━━━  Evolution  ━━━━━━┛</p>
                 </div>
+                {/* <div className="invisible lg:visible flex flex-row justify-evenly items-center text-2xl mt-4">
+                    <h1>(invisible on mobile; visible on desktop)</h1>
+                </div> */}
             </div>
         </div>
     )

@@ -6,9 +6,9 @@ export default function PokeList() {
             <div className="bg-zinc-400 m-5 ">
                 <Search />
             </div>
-            <div className="h-full">
+            {/* <div className="h-full">
                 <h1>PokeList</h1>
-            </div>
+            </div> */}
         </div>
     )
 }

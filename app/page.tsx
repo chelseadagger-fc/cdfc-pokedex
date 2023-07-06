@@ -41,7 +41,7 @@ export default async function Home() {
           statSpDef={pokeData.stats[4].base_stat}
           statSpd={pokeData.stats[5].base_stat}
           gender={pokeSpeciesData.gender_rate}
-          catchRate={pokeSpeciesData.capture_rate}
+          growthRate={pokeSpeciesData.growth_rate.name}
           dexEntry={pokeSpeciesData.flavor_text_entries[10].flavor_text}
 
         />
