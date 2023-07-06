@@ -140,6 +140,22 @@ export default async function PokeInfo(pokeData: pokeData) {
     }
     const evoStage1 = await getEvoStage1();
 
+    async function getEvoStage2() {
+        const res = await fetch('https://pokeapi.co/api/v2/pokemon/' + pokeData.evolution.evolves_to[0].species.name);
+        if (!res.ok) { throw new Error('Failed to fetch data') };
+        const data = await res.json();
+        return data;
+    }
+    const evoStage2 = await getEvoStage2();
+
+    async function getEvoStage3() {
+        const res = await fetch('https://pokeapi.co/api/v2/pokemon/' + pokeData.evolution.evolves_to[0].evolves_to[0].species.name);
+        if (!res.ok) { throw new Error('Failed to fetch data') };
+        const data = await res.json();
+        return data;
+    }
+    const evoStage3 = await getEvoStage3();
+
     return (
         <div className="flex flex-col my-2 mx-3">
             <div className="flex flex-row justify-evenly items-center">
@@ -234,16 +250,42 @@ export default async function PokeInfo(pokeData: pokeData) {
                     <p className="text-xs font-bold text-center text-stone-500 mt-3">┗━━━━━━━  Stats  ━━━━━━━┛</p>
                 </div>
                 <div className="flex flex-col mt-1">
-                    <div>
-                        <div>
+                    <div className="flex flex-row justify-evenly items-center">
+                        <div className="flex flex-col items-center">
                             <img
                                 src={urlGen6 + evoStage1.id + ".png"}
                                 alt={"image of " + evoStage1.name}
                             />
                             <p className="text-xs">{pretty(pokeData.evolution.species.name)}</p>
                         </div>
+                        <div className="flex flex-row items-center">
+                            <div className="flex items-center justify-end steel h-4 w-9 rounded-l-xl">
+                                <p className="text-[10px]">Lv.{pokeData.evolution.evolves_to[0].evolution_details[0].min_level}</p>
+                            </div>
+                            <div className="triangle-right"></div>
+                        </div>
+                        <div className="flex flex-col items-center">
+                            <img
+                                src={urlGen6 + evoStage2.id + ".png"}
+                                alt={"image of " + evoStage2.name}
+                            />
+                            <p className="text-xs">{pretty(pokeData.evolution.evolves_to[0].species.name)}</p>
+                        </div>
+                        <div className="flex flex-row items-center pr-1">
+                            <div className="flex items-center justify-end steel h-4 w-9 rounded-l-xl">
+                                <p className="text-[10px]">Lv.{pokeData.evolution.evolves_to[0].evolves_to[0].evolution_details[0].min_level}</p>
+                            </div>
+                            <div className="triangle-right"></div>
+                        </div>
+                        <div className="flex flex-col items-center">
+                            <img
+                                src={urlGen6 + evoStage3.id + ".png"}
+                                alt={"image of " + evoStage3.name}
+                            />
+                            <p className="text-xs">{pretty(pokeData.evolution.evolves_to[0].evolves_to[0].species.name)}</p>
+                        </div>
                     </div>
-                    <p className="text-xs font-bold text-center text-stone-500">┗━━━━━━  Evolution  ━━━━━━┛</p>
+                    <p className="text-xs font-bold text-center text-stone-500 mt-2">┗━━━━━━  Evolution  ━━━━━━┛</p>
                 </div>
                 {/* <div className="invisible lg:visible flex flex-row justify-evenly items-center text-2xl mt-1">
                     <h1>(invisible on mobile; visible on desktop)</h1>

@@ -101,3 +101,11 @@ body {
 .default {
   background-color: #FFFFFF;
 }
+
+.triangle-right {
+  width: 0;
+  height: 0;
+  border-top: 12px solid transparent;
+  border-left: 25px solid #B7B7CE;
+  border-bottom: 12px solid transparent;
+}
