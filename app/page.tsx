@@ -1,7 +1,7 @@
 import Layout from '@/components/Layout'
 import PokeInfo from '@/components/PokeInfo'
 
-const pkmn = 'ivysaur';
+const pkmn = 'pikachu';
 
 async function getData() {
   const res = await fetch('https://pokeapi.co/api/v2/pokemon/' + pkmn);
@@ -30,7 +30,7 @@ export default async function Home() {
   }
 
   return (
-    <main>
+    <main className="bg-zinc-200">
       <Layout>
         <PokeInfo 
           name={pokeData.name} 
