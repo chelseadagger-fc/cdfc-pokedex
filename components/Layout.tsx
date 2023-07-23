@@ -10,7 +10,6 @@ export default function Layout({children}: any) {
             <div className="bg-blue-500 invisible h-8 lg:visible lg:h-screen lg:w-1/3">
                 <PokeList />
             </div>
-            
         </div>
     )
 }

@@ -146,9 +146,7 @@ export default async function PokeInfo(pokeData: pokeData) {
     )
 
     const totalStats = pokeData.statHP + pokeData.statAtk + pokeData.statDef + pokeData.statSpAtk + pokeData.statSpDef + pokeData.statSpd;
-    
-    // const evoChainLength = Object.keys(pokeData.evolution.evolves_to).length;
-    // const evolutionDetails = (pokeData.evolution.evolves_to.length !== 0 ? evoChainLength : null)
+
     
     async function getEvoStage1() {
         const res = await fetch('https://pokeapi.co/api/v2/pokemon/' + pokeData.evolution.species.name);
@@ -156,7 +154,6 @@ export default async function PokeInfo(pokeData: pokeData) {
         const data = await res.json();
         return data;
     }
-    const evoStage1 = await getEvoStage1();
 
     async function getEvoStage2() {
         const res = await fetch('https://pokeapi.co/api/v2/pokemon/' + pokeData.evolution.evolves_to[0].species.name);
@@ -164,15 +161,20 @@ export default async function PokeInfo(pokeData: pokeData) {
         const data = await res.json();
         return data;
     }
-    const evoStage2 = await getEvoStage2();
 
     async function getEvoStage3() {
         const res = await fetch('https://pokeapi.co/api/v2/pokemon/' + pokeData.evolution.evolves_to[0].evolves_to[0].species.name);
-        if (!res.ok) { throw new Error('Failed to fetch data') };
-        const data = await res.json();
-        return data;
+        if (!res.ok) {
+            throw new Error('Failed to fetch data');
+        } else {
+            const data = await res.json();
+            return data;
+        }
     }
-    const evoStage3 = await getEvoStage3();
+
+    const evoStage1 = await getEvoStage1();
+    const evoStage2 = await getEvoStage2().catch((err) => {return null});
+    const evoStage3 = await getEvoStage3().catch((err) => {return null});
 
     const evoTrigger1 = pokeData.evolution.evolves_to[0].evolution_details[0];
     const evoArrowText1 = function() {
@@ -199,30 +201,71 @@ export default async function PokeInfo(pokeData: pokeData) {
         }
     }
 
-    const evoTrigger2 = pokeData.evolution.evolves_to[0].evolves_to[0].evolution_details[0];
-    const evoArrowText2 = function() {
-        if (evoTrigger2.trigger.name === "level-up") {
-            if (evoTrigger2.min_happiness !== null) {
-                return <p className="text-[12px]">♥&nbsp;&nbsp;&nbsp;</p>
-            } else if (evoTrigger2.min_beauty !== null) {
-                return <p className="text-[10px]">beauty</p>
-            } else if (evoTrigger2.min_affection !== null) {
-                return <p className="text-[10px]">affection</p>
-            } else if (evoTrigger2.min_level !== null) {
-                return <p className="text-[10px]">Lv.{evoTrigger2.min_level}</p>
-            } else {
-                return <p className="text-[10px]">???</p>
-            }
-        } else if (evoTrigger2.trigger.name === "use-item") {
-            return <p className="text-[10px]">use {evoTrigger2.item.name}</p>
-        } else if (evoTrigger2.trigger.name === "trade") {
-            if (evoTrigger2.held_item.name !== null) {
-                return <p className="text-[10px]">trade + {evoTrigger2.held_item.name}</p>
-            } else {
-                return <p className="text-[10px]">trade</p>
-            }
-        }
-    }
+    // const evoTrigger2 = pokeData.evolution.evolves_to[0].evolves_to[0].evolution_details[0];
+    // const evoArrowText2 = function() {
+    //     if (evoTrigger2.trigger.name === "level-up") {
+    //         if (evoTrigger2.min_happiness !== null) {
+    //             return <p className="text-[12px]">♥&nbsp;&nbsp;&nbsp;</p>
+    //         } else if (evoTrigger2.min_beauty !== null) {
+    //             return <p className="text-[10px]">beauty</p>
+    //         } else if (evoTrigger2.min_affection !== null) {
+    //             return <p className="text-[10px]">affection</p>
+    //         } else if (evoTrigger2.min_level !== null) {
+    //             return <p className="text-[10px]">Lv.{evoTrigger2.min_level}</p>
+    //         } else {
+    //             return <p className="text-[10px]">???</p>
+    //         }
+    //     } else if (evoTrigger2.trigger.name === "use-item") {
+    //         return <p className="text-[10px]">use {evoTrigger2.item.name}</p>
+    //     } else if (evoTrigger2.trigger.name === "trade") {
+    //         if (evoTrigger2.held_item.name !== null) {
+    //             return <p className="text-[10px]">trade + {evoTrigger2.held_item.name}</p>
+    //         } else {
+    //             return <p className="text-[10px]">trade</p>
+    //         }
+    //     }
+    // }
+
+    const evoChain = (evoStage2.id === null ? null :
+        <div className="flex flex-col mt-1">
+            <div className="flex flex-row justify-evenly items-center">
+                <div className="flex flex-col items-center">
+                    <img
+                        src={urlGen6 + evoStage1.id + ".png"}
+                        alt={"image of " + evoStage1.name}
+                    />
+                    <p className="text-xs">{pretty(pokeData.evolution.species.name)}</p>
+                </div>
+                <div className="flex flex-row items-center">
+                    <div className="flex items-center justify-end steel h-4 w-9 rounded-l-xl">
+                        {evoArrowText1()}
+                    </div>
+                    <div className="triangle-right"></div>
+                </div>
+                <div className="flex flex-col items-center">
+                    <img
+                        src={urlGen6 + evoStage2.id + ".png"}
+                        alt={"image of " + evoStage2.name}
+                    />
+                    <p className="text-xs">{pretty(pokeData.evolution.evolves_to[0].species.name)}</p>
+                </div>
+                {/* <div className="flex flex-row items-center pr-1">
+                    <div className="flex items-center justify-end steel h-4 w-9 rounded-l-xl">
+                        {evoArrowText2()}
+                    </div>
+                    <div className="triangle-right"></div>
+                </div>
+                <div className="flex flex-col items-center">
+                    <img
+                        src={urlGen6 + evoStage3.id + ".png"}
+                        alt={"image of " + evoStage3.name}
+                    />
+                    <p className="text-xs">{pretty(pokeData.evolution.evolves_to[0].evolves_to[0].species.name)}</p>
+                </div> */}
+            </div>
+            <p className="text-xs font-bold text-center text-stone-500 mt-2">┗━━━━━━  Evolution  ━━━━━━┛</p>
+        </div>
+    )
 
 
     return (
@@ -318,44 +361,7 @@ export default async function PokeInfo(pokeData: pokeData) {
                     </div>
                     <p className="text-xs font-bold text-center text-stone-500 mt-3">┗━━━━━━━  Stats  ━━━━━━━┛</p>
                 </div>
-                <div className="flex flex-col mt-1">
-                    <div className="flex flex-row justify-evenly items-center">
-                        <div className="flex flex-col items-center">
-                            <img
-                                src={urlGen6 + evoStage1.id + ".png"}
-                                alt={"image of " + evoStage1.name}
-                            />
-                            <p className="text-xs">{pretty(pokeData.evolution.species.name)}</p>
-                        </div>
-                        <div className="flex flex-row items-center">
-                            <div className="flex items-center justify-end steel h-4 w-9 rounded-l-xl">
-                                {evoArrowText1()}
-                            </div>
-                            <div className="triangle-right"></div>
-                        </div>
-                        <div className="flex flex-col items-center">
-                            <img
-                                src={urlGen6 + evoStage2.id + ".png"}
-                                alt={"image of " + evoStage2.name}
-                            />
-                            <p className="text-xs">{pretty(pokeData.evolution.evolves_to[0].species.name)}</p>
-                        </div>
-                        <div className="flex flex-row items-center pr-1">
-                            <div className="flex items-center justify-end steel h-4 w-9 rounded-l-xl">
-                                {evoArrowText2()}
-                            </div>
-                            <div className="triangle-right"></div>
-                        </div>
-                        <div className="flex flex-col items-center">
-                            <img
-                                src={urlGen6 + evoStage3.id + ".png"}
-                                alt={"image of " + evoStage3.name}
-                            />
-                            <p className="text-xs">{pretty(pokeData.evolution.evolves_to[0].evolves_to[0].species.name)}</p>
-                        </div>
-                    </div>
-                    <p className="text-xs font-bold text-center text-stone-500 mt-2">┗━━━━━━  Evolution  ━━━━━━┛</p>
-                </div>
+                {evoChain}
                 {/* <div className="invisible lg:visible flex flex-row justify-evenly items-center text-2xl mt-1">
                     <h1>(invisible on mobile; visible on desktop)</h1>
                 </div> */}
