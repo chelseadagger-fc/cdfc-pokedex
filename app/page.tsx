@@ -1,7 +1,7 @@
 import Layout from '@/components/Layout'
 import PokeInfo from '@/components/PokeInfo'
 
-const pkmn = 'lucario';
+const pkmn = 'emolga';
 
 async function getData() {
   const res = await fetch('https://pokeapi.co/api/v2/pokemon/' + pkmn);
