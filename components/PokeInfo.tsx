@@ -220,9 +220,10 @@ export default async function PokeInfo(pokeData: pokeData) {
                     return <p className="text-[10px]">???</p>
                 }
             } else if (evoTrigger2.trigger.name === "use-item") {
-                return <p className="text-[10px]">use {evoTrigger2.item.name}</p>
+                // return <p className="text-[10px]">{evoTrigger2.item.name}</p>
+                return <p className="text-[10px]">item</p>
             } else if (evoTrigger2.trigger.name === "trade") {
-                if (evoTrigger2.held_item.name !== null) {
+                if (evoTrigger2.held_item !== null) {
                     return <p className="text-[10px]">trade + {evoTrigger2.held_item.name}</p>
                 } else {
                     return <p className="text-[10px]">trade</p>
@@ -232,7 +233,7 @@ export default async function PokeInfo(pokeData: pokeData) {
     }
 
     const thirdStage = (evoStage3 === null ? null : (
-        <div>
+        <>
             <div className="flex flex-row items-center pr-1">
                 <div className="flex items-center justify-end steel h-4 w-9 rounded-l-xl">
                     {evoArrowText2()}
@@ -246,7 +247,7 @@ export default async function PokeInfo(pokeData: pokeData) {
                 />
                 <p className="text-xs">{pretty(pokeData.evolution.evolves_to[0].evolves_to[0].species.name)}</p>
             </div>
-        </div>
+        </>
     ))
     
 

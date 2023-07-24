@@ -4,7 +4,7 @@
 export default function Search() {
     return(
         <>
-            <h1>Search bar.</h1>
+            <h1>search</h1>
         </>
     )
 }
